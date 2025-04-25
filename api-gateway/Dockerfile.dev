@@ -1,0 +1,18 @@
+FROM node:23-alpine
+
+WORKDIR /usr/src/app
+
+# Install build tools and ts-node
+RUN apk add --no-cache python3 make g++
+
+# Copy package files first
+COPY package*.json ./
+
+# Install all dependencies (including devDependencies)
+RUN npm install
+
+# Copy source files
+COPY . .
+
+# Run with ts-node (for development only)
+CMD ["npm", "run", "start:debug"]

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, MinLength, ValidateIf } from 'class-validator';
 
 export class RegisterUserDto {
   @ApiProperty({ example: 'user@example.com' })
@@ -26,4 +26,10 @@ export class RegisterUserDto {
   @IsString()
   @IsNotEmpty()
   role: 'buyer' | 'seller';
+
+  @ApiProperty({ example: 'United States', description: 'Country of residence (required for sellers)' })
+  @ValidateIf(o => o.role === 'seller')
+  @IsString()
+  @IsNotEmpty()
+  country: string;
 }

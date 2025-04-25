@@ -24,8 +24,8 @@ export class UpdateProductDto {
   @IsOptional()
   stock?: number;
 
-  @ApiProperty({ example: 'updated-category', required: false })
+  @ApiProperty({ example: 'ABC123', required: false })
   @IsString()
   @IsOptional()
-  category?: string;
+  productCode?: string;
 }

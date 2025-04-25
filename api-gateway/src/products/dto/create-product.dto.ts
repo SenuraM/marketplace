@@ -22,8 +22,8 @@ export class CreateProductDto {
   @Min(0)
   stock: number;
 
-  @ApiProperty({ example: 'category' })
+  @ApiProperty({ example: 'ABC123' })
   @IsString()
   @IsNotEmpty()
-  category: string;
+  productCode: string;
 }
