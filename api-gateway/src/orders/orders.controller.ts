@@ -34,7 +34,7 @@ import {
       @Body() createOrderDto: CreateOrderDto,
       @CurrentUser() user: any,
     ) {
-      return this.ordersService.createOrder(createOrderDto, user.userId);
+      return this.ordersService.createOrder(createOrderDto, user.sub);
     }
   
     @Get()
@@ -43,7 +43,7 @@ import {
     @ApiResponse({ status: 200, description: 'Orders retrieved successfully' })
     @ApiResponse({ status: 401, description: 'Unauthorized' })
     async findAll(@CurrentUser() user: any, @Query() query: any) {
-      return this.ordersService.getUserOrders(user.userId, user.role, query);
+      return this.ordersService.getUserOrders(user.sub, user.role, query);
     }
   
     @Get(':id')
@@ -54,7 +54,7 @@ import {
     @ApiResponse({ status: 403, description: 'Forbidden' })
     @ApiResponse({ status: 404, description: 'Order not found' })
     async findOne(@Param('id') id: string, @CurrentUser() user: any) {
-      return this.ordersService.getOrderById(id, user.userId, user.role);
+      return this.ordersService.getOrderById(id, user.sub, user.role);
     }
   
     @Put(':id/status')
@@ -72,7 +72,7 @@ import {
       return this.ordersService.updateOrderStatus(
         id,
         updateOrderStatusDto,
-        user.userId,
+        user.sub,
       );
     }
   }
