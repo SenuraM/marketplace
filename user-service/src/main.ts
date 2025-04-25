@@ -1,8 +1,26 @@
 import { NestFactory } from '@nestjs/core';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { AppModule } from './app.module';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(process.env.PORT ?? 3000);
+  const configService = app.get(ConfigService);
+
+  // Setup Kafka microservice
+  app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.KAFKA,
+    options: {
+      client: {
+        clientId: 'user-service',
+        brokers: [configService.get<string>('KAFKA_BROKER') ?? 'localhost:9092'],
+      },
+      consumer: {
+        groupId: 'user-service-consumer',
+      },
+    },
+  });
+
+  await app.startAllMicroservices();
 }
 bootstrap();
