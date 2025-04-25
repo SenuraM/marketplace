@@ -11,9 +11,12 @@ import { Seller } from './entities/seller.entity';
 import { OrderService } from './order/order.service';
 import { OrderController } from './order/order.controller';
 import { KafkaModule } from './kafka/kafka.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { CronService } from './cron.service';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -58,6 +61,6 @@ import { KafkaModule } from './kafka/kafka.module';
     KafkaModule,
   ],
   controllers: [OrderController],
-  providers: [OrderService,],
+  providers: [OrderService, CronService],
 })
 export class AppModule {}
